@@ -26,20 +26,32 @@ spec:
         image: amer9722/mysql:v1
         imagePullPolicy: Always
         env:
-          - name: MYSQL_ROOT_PASSWORD
-            value: "RoboShop@1"
-          - name: MYSQL_DATABASE
-            value: "cities"
-        readinessProbe:
-          tcpSocket:
-            port: 3306
-          initialDelaySeconds: 10
-          periodSeconds: 10
-        livenessProbe:
-          tcpSocket:
-            port: 3306
-          initialDelaySeconds: 20
-          periodSeconds: 5
+        - name: MYSQL_ROOT_PASSWORD
+          value: "roboshop123"
+        - name: MYSQL_DATABASE
+          value: "cities"
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: mysql-storage
+      volumes:
+      - name: mysql-storage
+        persistentVolumeClaim:
+          claimName: mysql-pvc
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+  namespace: roboshop
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
 
 ---
 apiVersion: v1
@@ -56,6 +68,78 @@ spec:
     - protocol: TCP
       port: 3306
       targetPort: 3306
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: mysql
+#   namespace: roboshop
+#   labels:
+#     project: roboshop
+#     component: mysql
+#     tier: db
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       project: roboshop
+#       component: mysql
+#       tier: db
+#   template:
+#     metadata:
+#       labels:
+#         project: roboshop
+#         component: mysql
+#         tier: db
+#     spec:
+#       containers:
+#       - name: mysql
+#         image: amer9722/mysql:v1
+#         imagePullPolicy: Always
+#         env:
+#           - name: MYSQL_ROOT_PASSWORD
+#             value: "RoboShop@1"
+#           - name: MYSQL_DATABASE
+#             value: "cities"
+#         readinessProbe:
+#           tcpSocket:
+#             port: 3306
+#           initialDelaySeconds: 10
+#           periodSeconds: 10
+#         livenessProbe:
+#           tcpSocket:
+#             port: 3306
+#           initialDelaySeconds: 20
+#           periodSeconds: 5
+
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: mysql
+#   namespace: roboshop
+# spec:
+#   selector:
+#     project: roboshop
+#     component: mysql
+#     tier: db
+#   ports:
+#     - protocol: TCP
+#       port: 3306
+#       targetPort: 3306
 
 
 
