@@ -77,7 +77,7 @@ metadata:
   labels:
     project: roboshop
     component: frontend
-    tier: backend
+    tier: frontend
 spec:
   replicas: 1
   selector:
@@ -85,14 +85,14 @@ spec:
     matchLabels:
       project: roboshop
       component: frontend
-      tier: backend
+      tier: frontend
   # pod definition
   template:
     metadata:
       labels:
         project: roboshop
         component: frontend
-        tier: backend
+        tier: frontend
     spec:
       containers:
       - name: frontend
@@ -128,7 +128,7 @@ spec:
   selector:
     project: roboshop
     component: frontend
-    tier: backend
+    tier: frontend
   ports:
     - protocol: TCP
       port: 8080 # service port
