@@ -27,7 +27,7 @@ spec:
         imagePullPolicy: Always
         env:
           - name: MYSQL_ROOT_PASSWORD
-            value: "roboshop123"
+            value: "RoboShop@1"
           - name: MYSQL_DATABASE
             value: "cities"
         readinessProbe:
