@@ -36,13 +36,13 @@ spec:
       containers:
       - name: shipping
         image: amer9722/shipping:v1
-        ports:
-        - name: liveness-port
-          containerPort: 8080
         imagePullPolicy: Always
         envFrom:
         - configMapRef:
             name: shipping
+        ports:
+        - name: liveness-port
+          containerPort: 8080
         readinessProbe:
           httpGet:
             path: /health
@@ -55,8 +55,6 @@ spec:
             port: liveness-port
           failureThreshold: 1
           periodSeconds: 15
-
-# service for connecting shipping to shipping
 ---
 apiVersion: v1
 kind: Service
@@ -72,7 +70,6 @@ spec:
     - protocol: TCP
       port: 8080 # service port
       targetPort: 8080 # container port
-
 
 
 
