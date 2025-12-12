@@ -4,7 +4,7 @@ metadata:
   name: frontend
   namespace: roboshop
 data:
- nginx.conf: |
+  nginx.conf: |
     user nginx;
     worker_processes auto;
     error_log /var/log/nginx/error.log notice;
@@ -97,27 +97,30 @@ spec:
       containers:
       - name: frontend
         image: amer9722/frontend:v1
+        imagePullPolicy: Always
         ports:
         - name: liveness-port
           containerPort: 8080
-        imagePullPolicy: Always
-        envFrom:
-        - configMapRef:
-            name: frontend
         readinessProbe:
           httpGet:
-            path: /health
+            path: /
             port: liveness-port
           failureThreshold: 1
           periodSeconds: 15
         livenessProbe:
           httpGet:
-            path: /health
+            path: /
             port: liveness-port
           failureThreshold: 1
           periodSeconds: 15
-
-# service for connecting frontend to frontend
+        volumeMounts:
+        - name: nginx-config
+          mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: frontend
 ---
 apiVersion: v1
 kind: Service
@@ -134,10 +137,3 @@ spec:
     - protocol: TCP
       port: 80 # service port
       targetPort: 8080 # container port
-
-
-
-
-
-
-
