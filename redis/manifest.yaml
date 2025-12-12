@@ -26,16 +26,16 @@ spec:
     spec:
       containers:
       - name: redis
-        image: amer9722/redis:v1
+        image: redis:7.0
         imagePullPolicy: Always
         readinessProbe:
           tcpSocket:
-            port: 27017
+            port: 6379
           initialDelaySeconds: 10
           periodSeconds: 10
         livenessProbe:
           tcpSocket:
-            port: 27017
+            port: 6379
           initialDelaySeconds: 5
           periodSeconds: 5
 
@@ -53,8 +53,8 @@ spec:
     tier: db
   ports:
     - protocol: TCP
-      port: 27017 # service port
-      targetPort: 27017 # container port
+      port: 6379 # service port
+      targetPort: 6379 # container port
 
 
 
